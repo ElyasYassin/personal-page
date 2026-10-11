@@ -4,7 +4,8 @@ import { Container } from "@/components/Container";
 import { FilmFrame } from "@/components/FilmFrame";
 import { Photo } from "@/components/Photo";
 import { SectionHeading } from "@/components/SectionHeading";
-import { ArrowRight } from "@/components/Marks";
+import { ArrowRight, IronworkDivider } from "@/components/Marks";
+import { ArchOutline, archClip } from "@/components/ArchDefs";
 
 /**
  * "Selected Frames": a horizontal run of photographs at mixed aspect ratios,
@@ -13,7 +14,9 @@ import { ArrowRight } from "@/components/Marks";
  */
 export function PhotoStrip({ photos }: { photos: PhotoType[] }) {
   return (
-    <section aria-labelledby="frames-title" className="border-t rule bg-paper-deep/60 pb-14 pt-12 sm:pb-16">
+    <section aria-labelledby="frames-title" className="bg-paper-deep/60 pb-14 sm:pb-16">
+      <IronworkDivider className="block text-ink/25" />
+      <div className="pt-12" />
       <Container>
         <SectionHeading
           id="frames-title"
@@ -44,8 +47,8 @@ const STRIP_HEIGHT = "h-[200px] sm:h-[250px] lg:h-[290px]";
 
 function StripFrame({ photo, index }: { photo: PhotoType; index: number }) {
   const sizes = "(min-width: 1024px) 440px, 320px";
-  // The third frame gets the arch mask: a quiet nod to plastered arcades.
-  const arch = index === 2 && !photo.filmFrame && photo.aspect <= 1;
+  // The third frame is cut as a horseshoe arch, like a window in a whitewashed wall.
+  const arch = index === 2 && !photo.filmFrame && photo.aspect === 1;
   // Frames sit at slightly different heights, like prints laid on a table.
   const offset = index % 3 === 1 ? "lg:-translate-y-3" : index % 3 === 2 ? "lg:translate-y-1" : "";
 
@@ -60,8 +63,11 @@ function StripFrame({ photo, index }: { photo: PhotoType; index: number }) {
               <Photo src={photo.src} alt={photo.alt} sizes={sizes} />
             </FilmFrame>
           ) : (
-            <div className={`relative h-full w-full overflow-hidden ${arch ? "mask-arch" : ""}`}>
-              <Photo src={photo.src} alt={photo.alt} sizes={sizes} />
+            <div className="relative h-full w-full">
+              <div className="absolute inset-0 overflow-hidden" style={arch ? { clipPath: archClip("square") } : undefined}>
+                <Photo src={photo.src} alt={photo.alt} sizes={sizes} />
+              </div>
+              {arch && <ArchOutline shape="square" className="text-ink/40" />}
             </div>
           )}
         </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { hero } from "@/data/home";
 import { Container } from "@/components/Container";
-import { FilmFrame } from "@/components/FilmFrame";
+import { ArchFrame } from "@/components/ArchFrame";
 import { Photo } from "@/components/Photo";
 import { TechnicalLabel } from "@/components/TechnicalLabel";
 import { ArrowRight, CropMarks, RegistrationMark } from "@/components/Marks";
@@ -11,8 +11,13 @@ export function Hero() {
   const { image } = hero;
 
   return (
-    <section aria-labelledby="hero-title" className="border-b rule">
-      <Container className="grid grid-cols-1 gap-14 py-14 sm:py-20 lg:grid-cols-12 lg:gap-10 lg:py-24">
+    <section aria-labelledby="hero-title" className="relative overflow-hidden">
+      {/* Zellige linework on the wall behind the photograph, fading out before the headline */}
+      <div
+        aria-hidden="true"
+        className="zellige pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent_45%,black_80%)] lg:[mask-image:linear-gradient(to_right,transparent_38%,black_72%)]"
+      />
+      <Container className="relative grid grid-cols-1 gap-14 py-14 sm:py-20 lg:grid-cols-12 lg:gap-10 lg:py-24">
         {/* ── Text column ── */}
         <div className="flex flex-col justify-between lg:col-span-6 xl:col-span-6">
           <Reveal>
@@ -98,11 +103,9 @@ export function Hero() {
                 36°45′ N &nbsp;—&nbsp; 03°03′ E
               </span>
 
-              <FilmFrame className="grain">
-                <div className="relative" style={{ aspectRatio: image.aspect }}>
-                  <Photo src={image.src} alt={image.alt} priority sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 48vw, 90vw" />
-                </div>
-              </FilmFrame>
+              <ArchFrame aspect={image.aspect}>
+                <Photo src={image.src} alt={image.alt} priority sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 48vw, 90vw" />
+              </ArchFrame>
             </div>
 
             {/* scale bar + caption */}

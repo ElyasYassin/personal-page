@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans, IBM_Plex_Mono, Noto_Naskh_Arabic } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ArchDefs } from "@/components/ArchDefs";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <ArchDefs />
         <Header />
         <main id="main">{children}</main>
         <Footer />

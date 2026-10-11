@@ -10,6 +10,7 @@
   --color-forest: #263c30;     /* shutter green */
   --color-burgundy: #7c211c;   /* oxidized red */
   --color-sand: #c9bea8;       /* stone */
+  --color-ochre: #b98a3e;      /* glazed tile ochre */
   --color-film: #1c1a17;       /* contact-sheet film base */
 
   --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
@@ -29,8 +30,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Lime-washed plaster: a very low-frequency mottle over the parchment */
   body {
     background-color: var(--color-paper);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27480%27 height=%27480%27%3E%3Cfilter id=%27p%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.008%27 numOctaves=%274%27 seed=%277%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 0.55 0 0 0 0 0.47 0 0 0 0 0.34 0 0 0 0.16 -0.03%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url%28%23p%29%27/%3E%3C/svg%3E");
+    background-size: 480px 480px;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-feature-settings: "kern", "liga";
@@ -112,20 +116,47 @@
   }
 }
 
+/*
+ * Zellige linework: the eight-point star-and-cross tessellation found on
+ * Andalusian and Tlemcen tile panels, drawn as hairlines like a pattern
+ * study. `zellige` is a background whisper; `zellige-strong` fills the
+ * spandrels around the hero arch.
+ */
+@utility zellige {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2756%27 height=%2756%27%3E%3Cg fill=%27none%27 stroke=%27%23161815%27 stroke-opacity=%270.075%27 stroke-width=%270.6%27%3E%3Cpolygon points=%2756.00,28.00 47.80,36.20 47.80,47.80 36.20,47.80 28.00,56.00 19.80,47.80 8.20,47.80 8.20,36.20 0.00,28.00 8.20,19.80 8.20,8.20 19.80,8.20 28.00,0.00 36.20,8.20 47.80,8.20 47.80,19.80%27/%3E%3Cpolygon points=%2738.08,28.00 35.13,30.95 35.13,35.13 30.95,35.13 28.00,38.08 25.05,35.13 20.87,35.13 20.87,30.95 17.92,28.00 20.87,25.05 20.87,20.87 25.05,20.87 28.00,17.92 30.95,20.87 35.13,20.87 35.13,25.05%27/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+@utility zellige-strong {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2756%27 height=%2756%27%3E%3Cg fill=%27none%27 stroke=%27%23161815%27 stroke-opacity=%270.5%27 stroke-width=%270.6%27%3E%3Cpolygon points=%2756.00,28.00 47.80,36.20 47.80,47.80 36.20,47.80 28.00,56.00 19.80,47.80 8.20,47.80 8.20,36.20 0.00,28.00 8.20,19.80 8.20,8.20 19.80,8.20 28.00,0.00 36.20,8.20 47.80,8.20 47.80,19.80%27/%3E%3Cpolygon points=%2738.08,28.00 35.13,30.95 35.13,35.13 30.95,35.13 28.00,38.08 25.05,35.13 20.87,35.13 20.87,30.95 17.92,28.00 20.87,25.05 20.87,20.87 25.05,20.87 28.00,17.92 30.95,20.87 35.13,20.87 35.13,25.05%27/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 36px 36px;
+  background-position: center top;
+}
+
+/*
+ * Glazed tile frieze — the coloured band that runs along the base of a
+ * whitewashed wall. Height is set where it's used.
+ */
+@utility zellige-frieze {
+  background-color: var(--color-ochre);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2780%27 height=%2740%27%3E%3Crect width=%2780%27 height=%2740%27 fill=%27%23B98A3E%27/%3E%3Cpolygon points=%2740.00,20.00 34.14,25.86 34.14,34.14 25.86,34.14 20.00,40.00 14.14,34.14 5.86,34.14 5.86,25.86 0.00,20.00 5.86,14.14 5.86,5.86 14.14,5.86 20.00,0.00 25.86,5.86 34.14,5.86 34.14,14.14%27 fill=%27%23263C30%27 stroke=%27%23F1EBDD%27 stroke-width=%271.6%27/%3E%3Cpolygon points=%2726.50,20.00 24.60,21.90 24.60,24.60 21.90,24.60 20.00,26.50 18.10,24.60 15.40,24.60 15.40,21.90 13.50,20.00 15.40,18.10 15.40,15.40 18.10,15.40 20.00,13.50 21.90,15.40 24.60,15.40 24.60,18.10%27 fill=%27%23F1EBDD%27/%3E%3Cpolygon points=%2780.00,20.00 74.14,25.86 74.14,34.14 65.86,34.14 60.00,40.00 54.14,34.14 45.86,34.14 45.86,25.86 40.00,20.00 45.86,14.14 45.86,5.86 54.14,5.86 60.00,0.00 65.86,5.86 74.14,5.86 74.14,14.14%27 fill=%27%237C211C%27 stroke=%27%23F1EBDD%27 stroke-width=%271.6%27/%3E%3Cpolygon points=%2766.50,20.00 64.60,21.90 64.60,24.60 61.90,24.60 60.00,26.50 58.10,24.60 55.40,24.60 55.40,21.90 53.50,20.00 55.40,18.10 55.40,15.40 58.10,15.40 60.00,13.50 61.90,15.40 64.60,15.40 64.60,18.10%27 fill=%27%23F1EBDD%27/%3E%3Crect x=%27-3%27 y=%27-3%27 width=%276%27 height=%276%27 transform=%27rotate%2845 0 0%29%27 fill=%27%23F1EBDD%27/%3E%3Crect x=%27-3%27 y=%2737%27 width=%276%27 height=%276%27 transform=%27rotate%2845 0 40%29%27 fill=%27%23F1EBDD%27/%3E%3Crect x=%2737%27 y=%27-3%27 width=%276%27 height=%276%27 transform=%27rotate%2845 40 0%29%27 fill=%27%23F1EBDD%27/%3E%3Crect x=%2737%27 y=%2737%27 width=%276%27 height=%276%27 transform=%27rotate%2845 40 40%29%27 fill=%27%23F1EBDD%27/%3E%3Crect x=%2777%27 y=%27-3%27 width=%276%27 height=%276%27 transform=%27rotate%2845 80 0%29%27 fill=%27%23F1EBDD%27/%3E%3Crect x=%2777%27 y=%2737%27 width=%276%27 height=%276%27 transform=%27rotate%2845 80 40%29%27 fill=%27%23F1EBDD%27/%3E%3C/svg%3E");
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-position: center;
+  border-block: 1px solid var(--color-ink);
+  box-shadow:
+    0 -4px 0 -1px var(--color-paper),
+    0 -5px 0 -1px var(--color-ink),
+    0 4px 0 -1px var(--color-paper),
+    0 5px 0 -1px var(--color-ink);
+}
+
 /* Faint coordinate grid, as on a drafting sheet */
 @utility drafting-grid {
   background-image:
     linear-gradient(color-mix(in oklab, var(--color-ink) 7%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in oklab, var(--color-ink) 7%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
-}
-
-/*
- * Arch mask — the rounded arch of plastered Mediterranean doorways and
- * arcades. Used sparingly on a single archive frame.
- */
-@utility mask-arch {
-  border-radius: 50% 50% 0 0 / 50% 50% 0 0;
 }
 
 /*

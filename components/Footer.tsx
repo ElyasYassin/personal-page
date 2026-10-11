@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { navigation, site } from "@/data/site";
 import { Container } from "@/components/Container";
-import { IronworkDivider, StarOrnament } from "@/components/Marks";
+import { StarOrnament } from "@/components/Marks";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="bg-paper">
-      <IronworkDivider className="block text-ink/20" />
+      <div aria-hidden="true" className="zellige-frieze h-7 sm:h-9" />
       <Container className="pb-10 pt-12">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-5">
