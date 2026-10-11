@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Design tokens ───────────────────────── */
+
+@theme {
+  --color-paper: #f1ebdd;      /* limestone / parchment base */
+  --color-paper-deep: #e8e0d0; /* aged plaster, used for panels */
+  --color-ink: #161815;        /* near-black charcoal */
+  --color-muted: #68645c;      /* secondary text */
+  --color-forest: #263c30;     /* shutter green */
+  --color-burgundy: #7c211c;   /* oxidized red */
+  --color-sand: #c9bea8;       /* stone */
+  --color-film: #1c1a17;       /* contact-sheet film base */
+
+  --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-arabic: var(--font-naskh), "Geeza Pro", "Noto Naskh Arabic", serif;
+
+  --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "kern", "liga";
+  }
+
+  ::selection {
+    background: var(--color-burgundy);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-burgundy);
+    outline-offset: 3px;
+  }
+
+  /* Real Arabic typography wherever Arabic text appears */
+  :lang(ar) {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+/* ───────────────────────── Editorial utilities ───────────────────────── */
+
+@utility rule {
+  border-color: color-mix(in oklab, var(--color-ink) 16%, transparent);
+}
+
+@utility rule-strong {
+  border-color: var(--color-ink);
+}
+
+/* Small uppercase monospace label — an accent, never body text */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Tracking used for UI uppercase (navigation, buttons) */
+@utility caps {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Animated underline: draws in from the left on hover */
+@utility link-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 450ms var(--ease-editorial);
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+/*
+ * Film / paper grain. An inline SVG noise tile at very low opacity, applied
+ * only to specific surfaces (image frames, the archive strip) via ::after.
+ */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.11;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Faint coordinate grid, as on a drafting sheet */
+@utility drafting-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-ink) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-ink) 7%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/*
+ * Arch mask — the rounded arch of plastered Mediterranean doorways and
+ * arcades. Used sparingly on a single archive frame.
+ */
+@utility mask-arch {
+  border-radius: 50% 50% 0 0 / 50% 50% 0 0;
+}
+
+/*
+ * Ornamental band: a repeating eight-point-star tile (the kind found in
+ * old floor tiles and window grilles). Revealed only on hover.
+ */
+@utility tile-band {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cg fill='none' stroke='%237c211c' stroke-width='0.8'%3E%3Crect x='3' y='3' width='6' height='6'/%3E%3Crect x='3' y='3' width='6' height='6' transform='rotate(45 6 6)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 12px 12px;
+  background-repeat: repeat-x;
+}
+
+/* Scroll strip without a heavy scrollbar */
+@utility scroll-quiet {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-ink) 25%, transparent) transparent;
+}
+
+/* ───────────────────────── Reveal on scroll ───────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 900ms var(--ease-editorial),
+    transform 900ms var(--ease-editorial);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+  }
+}
+
+/* Without JS, content must still be visible */
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
