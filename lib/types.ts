@@ -15,12 +15,12 @@ export type Photo = {
   /** Only fill these in with real information — never invent EXIF data. */
   date?: string;
   location?: string;
+  /** e.g. "2,450 m" or "−18 m" — shown as a readout when present. */
+  elevation?: string;
   camera?: string;
   lens?: string;
   /** Free-form tags; collections are derived from these, never hard-coded. */
   tags?: string[];
-  /** Present the frame inside a contact-sheet / film-strip border. */
-  filmFrame?: boolean;
 };
 
 export type SectionLink = {
@@ -28,8 +28,11 @@ export type SectionLink = {
   title: string;
   href: string;
   description: string;
+  /** Short mono tag line shown above the title, e.g. "ML · Robotics". */
+  tag: string;
   image: Pick<Photo, "src" | "alt">;
-  accent: "burgundy" | "forest";
 };
 
 export type NavItem = { label: string; href: string };
+
+export type SpecItem = { label: string; value: string };

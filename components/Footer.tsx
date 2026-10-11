@@ -1,29 +1,31 @@
 import Link from "next/link";
 import { navigation, site } from "@/data/site";
 import { Container } from "@/components/Container";
-import { StarOrnament } from "@/components/Marks";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-paper">
-      <div aria-hidden="true" className="zellige-frieze h-7 sm:h-9" />
-      <Container className="pb-10 pt-12">
+    <footer className="relative isolate overflow-hidden bg-ink text-snow">
+      <div aria-hidden="true" className="terrain-lines absolute inset-0 -z-10 text-snow opacity-[0.06]" />
+      <Container className="pb-8 pt-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <p className="font-display text-3xl leading-tight text-ink">{site.name}</p>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
-              An engineer&rsquo;s field notebook, a photography archive, and a journal — kept with care.
+            <p className="label flex items-center gap-2.5 text-snow/60">
+              <span aria-hidden="true" className="h-1.5 w-1.5 bg-signal" />
+              {site.edition}
+            </p>
+            <p className="mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-snow/70">
+              Engineering, research, and photographs — from the mountains to the sea, and the machines in between.
             </p>
           </div>
 
-          <nav aria-label="Footer" className="lg:col-span-3">
-            <p className="label mb-4 text-muted">Index</p>
-            <ul className="grid grid-cols-2 gap-y-2 text-sm">
+          <nav aria-label="Footer" className="lg:col-span-4">
+            <p className="label mb-4 text-snow/50">Index</p>
+            <ul className="grid grid-cols-2 gap-y-2.5 text-[0.9375rem]">
               {navigation.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="link-line text-ink/85 hover:text-ink">
+                  <Link href={item.href} className="link-line text-snow/85 hover:text-snow">
                     {item.label}
                   </Link>
                 </li>
@@ -31,13 +33,13 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className="lg:col-span-4">
-            <p className="label mb-4 text-muted">Elsewhere</p>
-            <ul className="space-y-2 text-sm">
+          <div className="lg:col-span-3">
+            <p className="label mb-4 text-snow/50">Elsewhere</p>
+            <ul className="space-y-2.5 text-[0.9375rem]">
               {site.social.map((s) => (
                 <li key={s.href}>
-                  <a href={s.href} className="link-line text-ink/85 hover:text-ink" rel="me noopener" target="_blank">
-                    {s.label}
+                  <a href={s.href} className="link-line text-snow/85 hover:text-snow" rel="me noopener" target="_blank">
+                    {s.label} ↗
                   </a>
                 </li>
               ))}
@@ -45,13 +47,17 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-start gap-4 border-t rule pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="label text-muted">
-            © {year} {site.name} &nbsp;·&nbsp; All photographs by the author
-          </p>
-          <StarOrnament className="order-first h-4 w-4 text-burgundy/70 sm:order-none" />
-          <p className="label text-muted">
-            {site.edition} &nbsp;·&nbsp; <span lang="fr">Fait à la main</span>
+        <p
+          aria-hidden="true"
+          className="display mt-16 select-none whitespace-nowrap text-[clamp(3rem,13.5vw,13rem)] font-bold uppercase leading-[0.8] tracking-[-0.045em] text-snow/[0.92]"
+        >
+          {site.name}
+        </p>
+
+        <div className="mt-8 flex flex-col gap-3 border-t rule-light pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="label text-snow/50">© {year} {site.name} · All photographs by the author</p>
+          <p className="label text-snow/50">
+            <span lang="fr">Fait à la main</span> · <span lang="ar" dir="rtl">صُنع باليد</span>
           </p>
         </div>
       </Container>

@@ -7,7 +7,6 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <div aria-hidden="true" className="zellige-frieze h-6 sm:h-7" />
       <SectionIndex />
       <PhotoStrip photos={getSelectedFrames()} />
     </>

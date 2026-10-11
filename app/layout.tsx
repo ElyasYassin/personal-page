@@ -1,36 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans, IBM_Plex_Mono, Noto_Naskh_Arabic } from "next/font/google";
+import { Archivo, Geist, Geist_Mono, Noto_Sans_Arabic } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { ArchDefs } from "@/components/ArchDefs";
 import { site } from "@/data/site";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
+const archivo = Archivo({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const geist = Geist({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-dm-sans",
+  variable: "--font-geist",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-plex-mono",
+  variable: "--font-geist-mono",
   display: "swap",
 });
 
-const naskh = Noto_Naskh_Arabic({
+const notoArabic = Noto_Sans_Arabic({
   subsets: ["arabic"],
   weight: ["400", "500"],
-  variable: "--font-naskh",
+  variable: "--font-noto-arabic",
   display: "swap",
 });
 
@@ -40,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f1ebdd",
+  themeColor: "#0d1316",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -48,16 +45,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       dir="ltr"
-      className={`${cormorant.variable} ${dmSans.variable} ${plexMono.variable} ${naskh.variable}`}
+      className={`${archivo.variable} ${geist.variable} ${geistMono.variable} ${notoArabic.variable}`}
     >
       <body className="min-h-dvh antialiased">
         <a
           href="#main"
-          className="caps sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-3 focus:py-2 focus:text-paper"
+          className="caps sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-signal focus:px-3 focus:py-2 focus:text-ink"
         >
           Skip to content
         </a>
-        <ArchDefs />
         <Header />
         <main id="main">{children}</main>
         <Footer />

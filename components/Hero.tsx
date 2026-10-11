@@ -1,140 +1,110 @@
 import Link from "next/link";
 import { hero } from "@/data/home";
 import { Container } from "@/components/Container";
-import { ArchFrame } from "@/components/ArchFrame";
 import { Photo } from "@/components/Photo";
-import { TechnicalLabel } from "@/components/TechnicalLabel";
-import { ArrowRight, CropMarks, RegistrationMark } from "@/components/Marks";
 import { Reveal } from "@/components/Reveal";
+import { AltitudeGauge, ArrowRight, Viewfinder } from "@/components/Marks";
 
+/**
+ * Full-bleed photograph on a dark instrument surface: headline over a
+ * scrim, survey contours, a summit-to-sea-floor gauge, and a spec bar.
+ */
 export function Hero() {
   const { image } = hero;
+  const readout = [image.location, image.elevation, image.date].filter(Boolean).join("  ·  ");
 
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden">
-      {/* Zellige linework on the wall behind the photograph, fading out before the headline */}
-      <div
-        aria-hidden="true"
-        className="zellige pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent_45%,black_80%)] lg:[mask-image:linear-gradient(to_right,transparent_38%,black_72%)]"
-      />
-      <Container className="relative grid grid-cols-1 gap-14 py-14 sm:py-20 lg:grid-cols-12 lg:gap-10 lg:py-24">
-        {/* ── Text column ── */}
-        <div className="flex flex-col justify-between lg:col-span-6 xl:col-span-6">
-          <Reveal>
-            <p className="label flex flex-wrap gap-x-2 gap-y-1 text-muted">
-              {hero.kicker.map((word, i) => (
-                <span key={word} className="flex items-center gap-2">
-                  {i > 0 && <span aria-hidden="true" className="text-sand">/</span>}
-                  {word}
-                </span>
-              ))}
-            </p>
+    <section aria-labelledby="hero-title" className="relative isolate overflow-hidden bg-ink text-snow">
+      {/* Photograph + scrims + contours */}
+      <div className="grain absolute inset-0 -z-10">
+        <Photo src={image.src} alt={image.alt} tone="dark" placeholderLabel="corner" priority sizes="100vw" />
+        <div aria-hidden="true" className="absolute inset-0 z-[1] bg-gradient-to-r from-ink/90 via-ink/55 to-ink/10" />
+        <div aria-hidden="true" className="absolute inset-0 z-[1] bg-gradient-to-t from-ink via-transparent to-ink/30" />
+        <div aria-hidden="true" className="terrain-lines absolute inset-0 z-[1] text-snow opacity-[0.07]" />
+      </div>
 
-            <h1
-              id="hero-title"
-              className="mt-8 font-display text-[clamp(3.25rem,8.2vw,7.75rem)] font-normal leading-[0.9] tracking-[-0.015em] text-ink sm:mt-10"
-            >
-              {hero.headline.map((line, i) => (
-                <span key={i} className="block">
-                  {line.map((part, j) =>
-                    "highlight" in part && part.highlight ? (
-                      <em key={j} className="font-medium text-burgundy">
-                        {part.text}
-                      </em>
-                    ) : (
-                      <span key={j}>{part.text}</span>
-                    ),
-                  )}
-                </span>
-              ))}
-            </h1>
-          </Reveal>
+      <Container className="relative flex min-h-[min(92svh,960px)] flex-col pt-10 sm:pt-14">
+        <Viewfinder inset="24px 12px 0 12px" size={18} className="hidden text-snow/35 lg:block" />
 
-          <Reveal delay={150} className="mt-10 lg:mt-14">
-            <div className="grid gap-8 sm:grid-cols-[auto_1fr] sm:gap-6">
-              <span aria-hidden="true" className="label hidden pt-1 text-muted sm:block">
-                §&nbsp;01
+        {/* Top readout row */}
+        <div className="flex items-start justify-between gap-6 lg:px-8 lg:pt-6">
+          <p className="label flex flex-wrap gap-x-2 gap-y-1 text-snow/70">
+            {hero.kicker.map((word, i) => (
+              <span key={word} className="flex items-center gap-2">
+                {i > 0 && <span aria-hidden="true" className="text-signal">/</span>}
+                {word}
               </span>
-              <div className="max-w-[34rem]">
-                <p className="text-[1.0625rem] leading-[1.65] text-ink/85">{hero.intro}</p>
-                <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
-                  <Link
-                    href={hero.primaryCta.href}
-                    className="caps group inline-flex items-center gap-4 border border-forest bg-forest px-6 py-3.5 text-paper transition-colors duration-500 hover:bg-ink hover:border-ink"
-                  >
-                    {hero.primaryCta.label}
-                    <ArrowRight className="h-2.5 w-5 transition-transform duration-500 ease-[var(--ease-editorial)] group-hover:translate-x-1" />
-                  </Link>
-                  <Link href={hero.secondaryCta.href} className="caps link-line pb-1 text-ink [background-size:100%_1px] hover:text-burgundy">
-                    {hero.secondaryCta.label}
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </Reveal>
+            ))}
+          </p>
+          <p className="label hidden shrink-0 text-right text-snow/50 sm:block">
+            {image.id}
+            {readout && <span className="block text-snow/70">{readout}</span>}
+          </p>
         </div>
 
-        {/* ── Photograph ── */}
-        <Reveal delay={100} className="lg:col-span-6 xl:col-span-5 xl:col-start-8">
-          <figure className="relative mx-auto max-w-[560px] px-6 sm:px-8 lg:max-w-none">
-            {/* top annotations */}
-            <div className="mb-3 flex items-end justify-between">
-              <TechnicalLabel>Fig. 01</TechnicalLabel>
-              <TechnicalLabel>{image.id} &nbsp;·&nbsp; 35&nbsp;mm</TechnicalLabel>
-            </div>
-
-            <div className="relative">
-              <CropMarks inset="-14px" className="text-ink/45" />
-              <RegistrationMark className="absolute -right-7 -top-7 hidden h-5 w-5 text-ink/40 sm:block" />
-
-              {/* vertical film-edge markings, left */}
-              <span
-                aria-hidden="true"
-                className="label absolute -left-6 bottom-0 hidden rotate-180 whitespace-nowrap text-[0.5625rem] text-muted/80 [writing-mode:vertical-rl] sm:block"
+        {/* Headline + intro */}
+        <div className="relative flex flex-1 items-end gap-10 pb-14 pt-16 lg:px-8 lg:pb-20">
+          <div className="max-w-[56rem] flex-1">
+            <Reveal>
+              <h1
+                id="hero-title"
+                className="display text-[clamp(2.9rem,7.4vw,7.25rem)] font-semibold leading-[0.92] tracking-[-0.035em]"
               >
-                ▸ 14 &nbsp;&nbsp; ▸ 14A &nbsp;&nbsp; ISO 400
-              </span>
+                {hero.headline.map((line, i) => (
+                  <span key={i} className="block">
+                    {line.map((part, j) =>
+                      "highlight" in part && part.highlight ? (
+                        <span key={j} className="text-signal">
+                          {part.text}
+                        </span>
+                      ) : (
+                        <span key={j}>{part.text}</span>
+                      ),
+                    )}
+                  </span>
+                ))}
+              </h1>
+            </Reveal>
 
-              {/* vertical coordinates, right */}
-              <span
-                aria-hidden="true"
-                className="label absolute -right-6 top-0 hidden rotate-180 whitespace-nowrap text-[0.5625rem] text-muted/80 [writing-mode:vertical-rl] sm:block"
-              >
-                36°45′ N &nbsp;—&nbsp; 03°03′ E
-              </span>
+            <Reveal delay={120} className="mt-9 max-w-[36rem]">
+              <p className="text-[1.0625rem] leading-[1.65] text-snow/80">{hero.intro}</p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <Link
+                  href={hero.primaryCta.href}
+                  className="caps group inline-flex items-center gap-4 bg-signal px-6 py-3.5 text-ink transition-colors duration-300 hover:bg-snow"
+                >
+                  {hero.primaryCta.label}
+                  <ArrowRight className="h-2.5 w-5 transition-transform duration-500 ease-[var(--ease-instrument)] group-hover:translate-x-1" />
+                </Link>
+                <Link href={hero.secondaryCta.href} className="caps link-line pb-1 text-snow [background-size:100%_1px] hover:text-signal">
+                  {hero.secondaryCta.label}
+                </Link>
+              </div>
+            </Reveal>
+          </div>
 
-              <ArchFrame aspect={image.aspect}>
-                <Photo src={image.src} alt={image.alt} priority sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 48vw, 90vw" />
-              </ArchFrame>
-            </div>
-
-            {/* scale bar + caption */}
-            <div className="mt-5 flex items-start justify-between gap-6">
-              <figcaption className="font-display text-[1.0625rem] italic leading-snug text-ink/80">
-                {image.caption}
-              </figcaption>
-              <ScaleBar />
-            </div>
-          </figure>
-        </Reveal>
+          <AltitudeGauge className="mb-6 hidden h-[340px] shrink-0 lg:block" />
+        </div>
       </Container>
-    </section>
-  );
-}
 
-/** A small drafting scale bar — decorative. */
-function ScaleBar() {
-  return (
-    <div aria-hidden="true" className="shrink-0 pt-1 text-ink/60">
-      <svg width="88" height="10" viewBox="0 0 88 10" fill="none" stroke="currentColor" strokeWidth="0.75">
-        <path d="M0.5 1v8M22 5v4M44 1v8M66 5v4M87.5 1v8M0.5 9h87" />
-        <rect x="0.5" y="7" width="21.5" height="2" fill="currentColor" stroke="none" />
-        <rect x="44" y="7" width="22" height="2" fill="currentColor" stroke="none" />
-      </svg>
-      <div className="label mt-1 flex justify-between text-[0.5rem] text-muted">
-        <span>0</span>
-        <span>1 : 1</span>
+      {/* Spec bar — 1px gaps over a light ground draw the rules */}
+      <div className="relative border-t rule-light bg-ink">
+        <Container>
+          <dl className="grid grid-cols-2 gap-px bg-snow/15 lg:grid-cols-4">
+            {hero.spec.map((item, i) => (
+              <div
+                key={item.label}
+                className={`flex flex-col gap-1.5 bg-ink py-5 pr-4 ${i === 0 ? "pl-0" : i === 2 ? "pl-0 lg:pl-6" : "pl-5 lg:pl-6"}`}
+              >
+                <dt className="label text-snow/50">
+                  <span className="text-signal">{String(i + 1).padStart(2, "0")}</span>&nbsp;&nbsp;{item.label}
+                </dt>
+                <dd className="display text-[1.0625rem] font-medium leading-snug sm:text-lg">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Container>
       </div>
-    </div>
+    </section>
   );
 }

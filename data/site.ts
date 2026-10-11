@@ -4,9 +4,9 @@ export const site = {
   name: "Elyas Larfi",
   title: "Elyas Larfi — Ideas, Machines, and a More Interesting Life",
   description:
-    "The personal archive of Elyas Larfi: engineering, research, writing, photography, and exploration.",
+    "Elyas Larfi — engineering, research, robotics, cars, mountains, oceans, writing, and photography.",
   /** Edition marker shown in the header/footer — purely editorial. */
-  edition: "Vol. I",
+  edition: "Field log 01",
   social: [
     { label: "GitHub", href: "https://github.com/ElyasYassin" },
   ],

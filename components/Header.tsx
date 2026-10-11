@@ -13,30 +13,30 @@ function isActive(pathname: string, href: string) {
 
 function SearchIcon({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 16 16" className={className} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.1">
+    <svg viewBox="0 0 16 16" className={className} aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.25">
       <circle cx="6.75" cy="6.75" r="4.75" />
       <path d="M10.25 10.25 14.5 14.5" />
     </svg>
   );
 }
 
+/** Thin dark instrument bar, the same on every page. */
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Close the mobile menu after navigating
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="sticky top-0 z-40 border-b rule bg-paper/92 backdrop-blur-[2px]">
+    <header className="sticky top-0 z-40 border-b rule-light bg-ink/95 text-snow backdrop-blur-md">
       <Container className="flex h-14 items-center justify-between gap-6">
-        <Link href="/" className="group flex items-baseline gap-3">
-          <span className="caps font-medium tracking-[0.26em] text-ink">{site.name}</span>
-          <span className="label hidden text-[0.5625rem] text-muted xl:inline">{site.edition}</span>
+        <Link href="/" className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-2 w-2 bg-signal" />
+          <span className="display text-[0.9375rem] font-semibold uppercase tracking-[0.02em]">{site.name}</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-8">
+          <ul className="flex items-center gap-1">
             {navigation.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -44,11 +44,12 @@ export function Header() {
                   <Link
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={`caps link-line pb-1 transition-colors ${
-                      active ? "text-ink [background-size:100%_1px]" : "text-muted hover:text-ink"
+                    className={`caps relative block px-3.5 py-2 transition-colors ${
+                      active ? "text-snow" : "text-snow/60 hover:text-snow"
                     }`}
                   >
                     {item.label}
+                    {active && <span aria-hidden="true" className="absolute inset-x-3.5 -bottom-[11px] h-0.5 bg-signal" />}
                   </Link>
                 </li>
               );
@@ -56,15 +57,15 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-5">
-          <button type="button" aria-label="Search" title="Search" className="text-ink/80 transition-colors hover:text-burgundy">
-            <SearchIcon className="h-[15px] w-[15px]" />
+        <div className="flex items-center gap-4">
+          <button type="button" aria-label="Search" title="Search" className="text-snow/75 transition-colors hover:text-signal">
+            <SearchIcon className="h-4 w-4" />
           </button>
-          <span aria-hidden="true" className="hidden h-4 w-px bg-ink/20 sm:block" />
+          <span aria-hidden="true" className="hidden h-4 w-px bg-snow/20 sm:block" />
           <LanguageSwitcher className="hidden sm:flex" />
           <button
             type="button"
-            className="caps -mr-1 px-1 text-ink lg:hidden"
+            className="caps -mr-1 px-1 lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
@@ -75,18 +76,18 @@ export function Header() {
       </Container>
 
       {open && (
-        <nav id="mobile-nav" aria-label="Primary" className="border-t rule lg:hidden">
-          <Container className="py-4">
+        <nav id="mobile-nav" aria-label="Primary" className="border-t rule-light lg:hidden">
+          <Container className="py-3">
             <ol>
               {navigation.map((item, i) => (
-                <li key={item.href} className="border-b rule last:border-b-0">
+                <li key={item.href} className="border-b rule-light last:border-b-0">
                   <Link
                     href={item.href}
                     aria-current={isActive(pathname, item.href) ? "page" : undefined}
                     className="flex items-baseline gap-4 py-3"
                   >
-                    <span className="label w-6 text-muted">{String(i).padStart(2, "0")}</span>
-                    <span className="font-display text-2xl">{item.label}</span>
+                    <span className="label w-6 text-signal">{String(i).padStart(2, "0")}</span>
+                    <span className="display text-2xl font-medium">{item.label}</span>
                   </Link>
                 </li>
               ))}

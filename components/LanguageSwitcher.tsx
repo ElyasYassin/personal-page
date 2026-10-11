@@ -12,24 +12,25 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
   const [active, setActive] = useState<LanguageCode>("en");
 
   return (
-    <div role="group" aria-label="Language" className={`flex items-center ${className}`}>
-      {languages.map((lang, i) => (
-        <span key={lang.code} className="flex items-center">
-          {i > 0 && <span aria-hidden="true" className="mx-1.5 h-2.5 w-px bg-ink/25" />}
+    <div role="group" aria-label="Language" className={`flex items-center gap-1 ${className}`}>
+      {languages.map((lang) => {
+        const on = active === lang.code;
+        return (
           <button
+            key={lang.code}
             type="button"
             lang={lang.code}
             dir={lang.dir}
-            aria-pressed={active === lang.code}
+            aria-pressed={on}
             onClick={() => setActive(lang.code)}
-            className={`px-0.5 transition-colors duration-300 ${
-              lang.code === "ar" ? "text-[0.8125rem] leading-none" : "caps"
-            } ${active === lang.code ? "text-ink" : "text-muted hover:text-ink"}`}
+            className={`flex h-6 min-w-7 items-center justify-center px-1.5 transition-colors duration-300 ${
+              lang.code === "ar" ? "text-[0.8125rem] leading-none" : "label"
+            } ${on ? "bg-snow text-ink" : "text-snow/60 hover:text-snow"}`}
           >
-            <span className={active === lang.code ? "border-b border-burgundy pb-0.5" : ""}>{lang.label}</span>
+            {lang.label}
           </button>
-        </span>
-      ))}
+        );
+      })}
     </div>
   );
 }
